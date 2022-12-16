@@ -1,0 +1,10 @@
+data:
+  wechat:
+    appID: wxae5be46991248659
+    appsecret: 736af0067fe2d85c437bf58e618bb5ee
+
+uri:
+  wechat:
+    accessToken: https://api.weixin.qq.com/cgi-bin/token?grant_type=client_credential&appid=wxae5be46991248659&secret=736af0067fe2d85c437bf58e618bb5ee
+
+
