@@ -1,4 +1,4 @@
-package com.weiyuscode.wechatpush.common.Result;
+package com.weiyuscode.wechatpush.Result;
 
 public enum ResultType {
     SUCCESS(200, "success"),
