@@ -1,17 +1,20 @@
 package com.weiyuscode.wechatpush.entity;
-import com.alibaba.fastjson.annotation.JSONField;
+import com.alibaba.fastjson.JSONObject;
 import lombok.Data;
 
 @Data
 public class TemplateMsg {
-    @JSONField(name = "touser")
     private String touser;
-
-    @JSONField(name = "template_id")
     private String templateID;
-
-    @JSONField(name = "data")
     public TempMsgData data;
+
+    public JSONObject toTemplateMsgJson(){
+        JSONObject body = new JSONObject();
+        body.put("touser", touser);
+        body.put("template_id", templateID);
+        body.put("data",  data.toTemplateMsgJsonData());
+        return body;
+    }
 }
 
 
