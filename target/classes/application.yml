@@ -3,6 +3,11 @@ wechat:
     appID: wxae5be46991248659
     appsecret: 736af0067fe2d85c437bf58e618bb5ee
     accessTokenUrl: https://api.weixin.qq.com/cgi-bin/token?grant_type=client_credential&appid=wxae5be46991248659&secret=736af0067fe2d85c437bf58e618bb5ee
-    tempID: 3rMrxKV3r2i0v-Tm06esYmNOk2sBJakR_gxVZJoZmFY
+    tempID: 6bjwMLMWDRv_kaNneDY0GBTTdsuRUzI4dG7z7As8iI0
     openID: ofEgn6HeCXqHc5DZcR_FmDMlKcjs
     templateMsgUrl: https://api.weixin.qq.com/cgi-bin/message/template/send?access_token=
+
+
+openWeather:
+  config:
+    url: https://api.openweathermap.org/data/2.5/weather?lat=49.48&lon=-97.9&appid=d686bb6dd05b39f5410278910944e60d&lang=zh_cn

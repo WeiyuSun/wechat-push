@@ -1,8 +1,11 @@
 package com.weiyuscode.wechatpush.controller;
 
+import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
+import com.alibaba.fastjson.support.hsf.HSFJSONUtils;
+import com.weiyuscode.wechatpush.entity.TemplateMessage;
 import com.weiyuscode.wechatpush.service.AccessTokenService;
-import com.weiyuscode.wechatpush.service.TempMsgService;
+import com.weiyuscode.wechatpush.service.TempMessageService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.scheduling.annotation.Scheduled;
@@ -30,7 +33,7 @@ import org.springframework.web.client.RestTemplate;
 @RestController()
 public class TempMsgController {
     @Autowired
-    private TempMsgService tempMsgService;
+    private TempMessageService tempMessageService;
     @Autowired
     private RestTemplate restTemplate;
 
@@ -40,15 +43,13 @@ public class TempMsgController {
     @Autowired
     private AccessTokenService accessTokenService;
 
-    @Scheduled(initialDelay = 4000, fixedRate = 1000000)
+    @Scheduled(initialDelay = 9000, fixedRate = 1000000)
     public void getTempMsg(){
-        JSONObject body = tempMsgService.getTempMsg().toTemplateMsgJson();
-
-        System.out.println("json message:");
-        System.out.println(body);
+        //JSONObject body = tempMsgService.getTempMsg().toTemplateMsgJson();
+        JSONObject templateMessage = tempMessageService.getJsonTempMsg();
         templateMsgUrl += accessTokenService.getAccessToken().getAccessToken();
-        System.out.println(templateMsgUrl);
-        String result = restTemplate.postForObject(templateMsgUrl, body, String.class);
+        System.out.println(templateMessage);
+        String result = restTemplate.postForObject(templateMsgUrl, templateMessage, String.class);
         System.out.println(result);
     }
 }
