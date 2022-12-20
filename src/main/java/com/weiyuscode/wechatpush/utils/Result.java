@@ -1,4 +1,4 @@
-package com.weiyuscode.wechatpush.Result;
+package com.weiyuscode.wechatpush.utils;
 
 public class Result<T> {
     private Integer code;

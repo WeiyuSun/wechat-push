@@ -1,15 +1,22 @@
 package com.weiyuscode.wechatpush.service.impl;
-import com.alibaba.fastjson.JSONObject;
+
 import com.weiyuscode.wechatpush.entity.TempMsgData;
 import com.weiyuscode.wechatpush.entity.TemplateMessage;
+import com.weiyuscode.wechatpush.entity.TemplateMsgDataContent;
 import com.weiyuscode.wechatpush.entity.Weather;
+import com.weiyuscode.wechatpush.service.DailyMessageService;
 import com.weiyuscode.wechatpush.service.TempMessageService;
 import com.weiyuscode.wechatpush.service.WeatherService;
+import com.weiyuscode.wechatpush.utils.DateUtils;
+import com.weiyuscode.wechatpush.utils.TextColorUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
+import org.springframework.web.filter.OncePerRequestFilter;
 
-import java.util.Map;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 
 @Service
 public class TempMessageServiceImpl implements TempMessageService {
@@ -18,54 +25,83 @@ public class TempMessageServiceImpl implements TempMessageService {
     private String touser;
     @Value("${wechat.config.tempID}")
     private String tempID;
+
+    @Value("${wechat.config.relationStartDate}")
+    private String relationStartDate;
+
     @Autowired
     private WeatherService weatherService;
 
+    @Autowired
+    private DailyMessageService dailyMessageService;
+
     /**
      * get the json template message
-     * @return
+     *
      */
     @Override
-    public JSONObject getJsonTempMsg() {
+    public TemplateMessage getTemplateMessage() {
         Weather weather = weatherService.getWeather();
         TemplateMessage msg = new TemplateMessage();
         TempMsgData tempMsgData = new TempMsgData();
 
-        tempMsgData.setTemperatureMax(weather.getTempMax());
-        tempMsgData.setTemperatureMin(weather.getTempMin());
-        tempMsgData.setTemperatureFeel(weather.getTempFeel());
-        tempMsgData.setWeatherDetails(weather.getWeatherDetails());
+        tempMsgData.setTemperatureMax(generateTemperatureContent(weather.getTempMax(), true));
+        tempMsgData.setTemperatureMin(generateTemperatureContent(weather.getTempMin(), true));
+        tempMsgData.setTemperatureFeel(generateFeelTemperatureContent(weather, true));
 
+        tempMsgData.setWeatherDetails(new TemplateMsgDataContent(weather.getWeatherDetails()));
+
+        SimpleDateFormat dateFormat = DateUtils.getYmdDateFormat();
+        Date start = null;
+        try {
+            start = dateFormat.parse(relationStartDate);
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+
+        Long relationLen = DateUtils.daysBetween(start, new Date());
+        tempMsgData.setRelationLen(new TemplateMsgDataContent(relationLen.toString(), TextColorUtils.orange));
+        tempMsgData.setDailyMessage(new TemplateMsgDataContent(dailyMessageService.getTodayMessage(), TextColorUtils.pink));
+        tempMsgData.setDailyHint(new TemplateMsgDataContent(dailyMessageService.getTodayHint(), TextColorUtils.pink));
         msg.setTouser(touser);
         msg.setTemplateID(tempID);
         msg.setData(tempMsgData);
-        return toJsonTempMessage(msg);
+        return msg;
     }
-    private JSONObject toJsonTempMessage(TemplateMessage templateMessage){
-        JSONObject jsonTempMessage = new JSONObject();
-        JSONObject jsonData = new JSONObject();
 
-        TempMsgData data = templateMessage.getData();
-        System.out.println("from tempMsgService: " + data);
+    private TemplateMsgDataContent generateTemperatureContent(Integer temperature, boolean addEmoji){
+        String content = "" + temperature + "°C";
+        String textColor = TextColorUtils.black;
+        return getTemplateMsgDataContent(addEmoji, content, temperature);
+    }
 
-        JSONObject jsonTempMin = new JSONObject();
-        jsonTempMin.put("value", data.getTemperatureMin());
-        JSONObject jsonTempMax = new JSONObject();
-        jsonTempMax.put("value", data.getTemperatureMax());
-        JSONObject jsonTempFeel = new JSONObject();
-        jsonTempFeel.put("value", data.getTemperatureFeel());
-        JSONObject jsonWeatherDetails= new JSONObject();
-        jsonWeatherDetails.put("value", data.getWeatherDetails());
+    private TemplateMsgDataContent generateFeelTemperatureContent(Weather weatherInfo, boolean addEmoji){
+        String content =  weatherInfo.getTempFeel() + "°C";
+        String textColor = TextColorUtils.black;
 
-        jsonData.put("temp_min", jsonTempMin);
-        jsonData.put("temp_max", jsonTempMax);
-        jsonData.put("temp_feel", jsonTempFeel);
-        jsonData.put("weather_desc", jsonWeatherDetails);
+        Integer tempFeel = weatherInfo.getTempFeel();
+        Integer tempMax = weatherInfo.getTempMax();
+        Integer tempMin = weatherInfo.getTempMin();
 
-        jsonTempMessage.put("data", jsonData);
-        jsonTempMessage.put("touser", templateMessage.getTouser());
-        jsonTempMessage.put("template_id", templateMessage.getTemplateID());
+        if (tempFeel - tempMax >= 5 || tempMin - tempFeel >= 5) {
+            content += "别被骗到>_<!";
+        }
 
-        return jsonTempMessage;
+        return getTemplateMsgDataContent(addEmoji, content, tempFeel);
+    }
+
+    private TemplateMsgDataContent getTemplateMsgDataContent(boolean addEmoji, String content, Integer tempFeel) {
+        String textColor;
+        if(tempFeel > 25){ // > 25
+            textColor = TextColorUtils.hotTemperatureTextColor;
+            content = (addEmoji) ? content + "\uD83E\uDD75" : content;
+        } else if(tempFeel > 0) { // <= 25 && > 0
+            textColor = TextColorUtils.normalTemperatureTextColor;
+            content = (addEmoji) ? content + "\uD83E\uDD17" : content;
+        } else { // <= 0
+            textColor = TextColorUtils.coldTemperatureTextColor;
+            content = (addEmoji) ? content + "\uD83E\uDD76" : content;
+        }
+        return new TemplateMsgDataContent(content, textColor);
     }
 }

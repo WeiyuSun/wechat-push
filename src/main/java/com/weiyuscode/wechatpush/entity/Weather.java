@@ -4,8 +4,8 @@ import lombok.Data;
 
 @Data
 public class Weather {
-    Float tempMin;
-    Float tempMax;
-    Float tempFeel;
+    Integer tempMin;
+    Integer tempMax;
+    Integer tempFeel;
     String weatherDetails;
 }

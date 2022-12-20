@@ -6,6 +6,8 @@ import lombok.Data;
 @Data
 public class TemplateMessage {
     private String touser;
+
+    @JSONField(name = "template_id")
     private String templateID;
     public TempMsgData data;
 }

@@ -1,9 +1,10 @@
 package com.weiyuscode.wechatpush.service;
 
-import com.alibaba.fastjson.JSONObject;
 import com.weiyuscode.wechatpush.entity.TemplateMessage;
+
+import java.text.ParseException;
 
 
 public interface TempMessageService {
-    public JSONObject getJsonTempMsg();
+    TemplateMessage getTemplateMessage();
 }

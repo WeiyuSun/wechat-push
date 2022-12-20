@@ -9,7 +9,5 @@ import org.springframework.scheduling.annotation.EnableScheduling;
 public class WechatPushApplication {
     public static void main(String[] args) {
         SpringApplication.run(WechatPushApplication.class, args);
-
     }
-
 }
