@@ -3,8 +3,10 @@ wechat:
     appID: wxae5be46991248659
     appsecret: 736af0067fe2d85c437bf58e618bb5ee
     accessTokenUrl: https://api.weixin.qq.com/cgi-bin/token?grant_type=client_credential&appid=wxae5be46991248659&secret=736af0067fe2d85c437bf58e618bb5ee
-    tempID: VnpoELV8tDAphaUcXJ9LNN9EOa2PAAxtqsq0ejimanc
-    openID: ofEgn6HeCXqHc5DZcR_FmDMlKcjs
+    tempID: Kx_VJGoV4BT2T5gt0Pq9l8dZr5cs88FnIzme75t2s3c
+    openID:
+      me: ofEgn6HeCXqHc5DZcR_FmDMlKcjs
+      special: ofEgn6GNS_cPCTCKrWCUXAzdVSdc
     templateMsgUrl: https://api.weixin.qq.com/cgi-bin/message/template/send?access_token=
     relationStartDate: 2022-12-10
     menstruationDay: 5

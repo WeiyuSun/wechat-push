@@ -29,7 +29,8 @@ public class TempMsgController {
     @Autowired
     private AccessTokenService accessTokenService;
 
-    @Scheduled(cron = "0 25 17 * * ?", zone="America/Winnipeg")
+    @Scheduled(cron = "0 30 9 * * ?", zone="America/Winnipeg")
+//    @Scheduled(initialDelay = 7000, fixedRate = 10000000)
     public void getTempMsg(){
         TemplateMessage templateMessage = tempMessageService.getTemplateMessage();
         templateMsgUrl += accessTokenService.getAccessToken().getAccessToken();

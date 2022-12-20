@@ -18,10 +18,13 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
+import static com.weiyuscode.wechatpush.utils.TemperatureUtils.generateFeelTemperatureContent;
+import static com.weiyuscode.wechatpush.utils.TemperatureUtils.generateTemperatureContent;
+
 @Service
 public class TempMessageServiceImpl implements TempMessageService {
 
-    @Value("${wechat.config.openID}")
+    @Value("${wechat.config.openID.me}")
     private String touser;
     @Value("${wechat.config.tempID}")
     private String tempID;
@@ -67,41 +70,5 @@ public class TempMessageServiceImpl implements TempMessageService {
         msg.setTemplateID(tempID);
         msg.setData(tempMsgData);
         return msg;
-    }
-
-    private TemplateMsgDataContent generateTemperatureContent(Integer temperature, boolean addEmoji){
-        String content = "" + temperature + "°C";
-        String textColor = TextColorUtils.black;
-        return getTemplateMsgDataContent(addEmoji, content, temperature);
-    }
-
-    private TemplateMsgDataContent generateFeelTemperatureContent(Weather weatherInfo, boolean addEmoji){
-        String content =  weatherInfo.getTempFeel() + "°C";
-        String textColor = TextColorUtils.black;
-
-        Integer tempFeel = weatherInfo.getTempFeel();
-        Integer tempMax = weatherInfo.getTempMax();
-        Integer tempMin = weatherInfo.getTempMin();
-
-        if (tempFeel - tempMax >= 5 || tempMin - tempFeel >= 5) {
-            content += "别被骗到>_<!";
-        }
-
-        return getTemplateMsgDataContent(addEmoji, content, tempFeel);
-    }
-
-    private TemplateMsgDataContent getTemplateMsgDataContent(boolean addEmoji, String content, Integer tempFeel) {
-        String textColor;
-        if(tempFeel > 25){ // > 25
-            textColor = TextColorUtils.hotTemperatureTextColor;
-            content = (addEmoji) ? content + "\uD83E\uDD75" : content;
-        } else if(tempFeel > 0) { // <= 25 && > 0
-            textColor = TextColorUtils.normalTemperatureTextColor;
-            content = (addEmoji) ? content + "\uD83E\uDD17" : content;
-        } else { // <= 0
-            textColor = TextColorUtils.coldTemperatureTextColor;
-            content = (addEmoji) ? content + "\uD83E\uDD76" : content;
-        }
-        return new TemplateMsgDataContent(content, textColor);
     }
 }
