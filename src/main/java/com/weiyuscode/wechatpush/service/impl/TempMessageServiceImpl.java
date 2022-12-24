@@ -1,22 +1,23 @@
 package com.weiyuscode.wechatpush.service.impl;
 
-import com.weiyuscode.wechatpush.entity.TempMsgData;
-import com.weiyuscode.wechatpush.entity.TemplateMessage;
-import com.weiyuscode.wechatpush.entity.TemplateMsgDataContent;
-import com.weiyuscode.wechatpush.entity.Weather;
+import com.weiyuscode.wechatpush.pojo.TempMsgData;
+import com.weiyuscode.wechatpush.pojo.TemplateMessage;
+import com.weiyuscode.wechatpush.pojo.TemplateMsgDataContent;
+import com.weiyuscode.wechatpush.pojo.Weather;
 import com.weiyuscode.wechatpush.service.DailyMessageService;
 import com.weiyuscode.wechatpush.service.TempMessageService;
 import com.weiyuscode.wechatpush.service.WeatherService;
 import com.weiyuscode.wechatpush.utils.DateUtils;
 import com.weiyuscode.wechatpush.utils.TextColorUtils;
+import com.weiyuscode.wechatpush.vo.WechatMessageVo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
-import org.springframework.web.filter.OncePerRequestFilter;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.Map;
 
 import static com.weiyuscode.wechatpush.utils.TemperatureUtils.generateFeelTemperatureContent;
 import static com.weiyuscode.wechatpush.utils.TemperatureUtils.generateTemperatureContent;
@@ -70,5 +71,10 @@ public class TempMessageServiceImpl implements TempMessageService {
         msg.setTemplateID(tempID);
         msg.setData(tempMsgData);
         return msg;
+    }
+
+    @Override
+    public void processMessageFromWechat(WechatMessageVo wechatMessageVo) {
+
     }
 }

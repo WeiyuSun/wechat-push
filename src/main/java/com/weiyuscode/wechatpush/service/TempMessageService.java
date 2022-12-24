@@ -1,10 +1,13 @@
 package com.weiyuscode.wechatpush.service;
 
-import com.weiyuscode.wechatpush.entity.TemplateMessage;
+import com.weiyuscode.wechatpush.pojo.TemplateMessage;
+import com.weiyuscode.wechatpush.vo.WechatMessageVo;
 
-import java.text.ParseException;
+import java.util.Map;
 
 
 public interface TempMessageService {
     TemplateMessage getTemplateMessage();
+
+    void processMessageFromWechat(WechatMessageVo wechatMessageVo);
 }

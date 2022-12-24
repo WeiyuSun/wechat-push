@@ -1,6 +1,6 @@
 package com.weiyuscode.wechatpush.controller;
 
-import com.weiyuscode.wechatpush.entity.AccessToken;
+import com.weiyuscode.wechatpush.pojo.AccessToken;
 import com.weiyuscode.wechatpush.service.AccessTokenService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;

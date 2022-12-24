@@ -1,7 +1,7 @@
 package com.weiyuscode.wechatpush.utils;
 
-import com.weiyuscode.wechatpush.entity.TemplateMsgDataContent;
-import com.weiyuscode.wechatpush.entity.Weather;
+import com.weiyuscode.wechatpush.pojo.TemplateMsgDataContent;
+import com.weiyuscode.wechatpush.pojo.Weather;
 
 public class TemperatureUtils {
 

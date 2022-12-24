@@ -1,4 +1,4 @@
-package com.weiyuscode.wechatpush.entity;
+package com.weiyuscode.wechatpush.pojo;
 import lombok.Data;
 
 @Data
