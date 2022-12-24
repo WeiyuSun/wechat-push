@@ -1,12 +1,9 @@
 package com.weiyuscode.wechatpush.service.impl;
 
 import com.alibaba.fastjson.JSONObject;
-import com.weiyuscode.wechatpush.entity.Weather;
+import com.weiyuscode.wechatpush.pojo.Weather;
 import com.weiyuscode.wechatpush.service.WeatherService;
 import org.springframework.stereotype.Service;
-import org.springframework.web.client.RestTemplate;
-
-import javax.swing.*;
 
 @Service
 public class WeatherServiceImpl implements WeatherService {

@@ -18,7 +18,7 @@ public class WeatherController {
     private WeatherService weatherService;
 
 
-    @Scheduled(initialDelay = 3000, fixedRate = 20000000)
+//    @Scheduled(initialDelay = 3000, fixedRate = 20000000)
     public void getWeather(){
         JSONObject result = restTemplate.getForObject(url, JSONObject.class);
         System.out.println(result);

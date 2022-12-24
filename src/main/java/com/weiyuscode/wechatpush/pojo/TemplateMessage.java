@@ -1,5 +1,4 @@
-package com.weiyuscode.wechatpush.entity;
-import com.alibaba.fastjson.JSONObject;
+package com.weiyuscode.wechatpush.pojo;
 import com.alibaba.fastjson.annotation.JSONField;
 import lombok.Data;
 

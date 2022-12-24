@@ -36,7 +36,7 @@ public class DailyMessageController {
     }
 
 //    @Scheduled(cron = "0 30 7 * * ?", zone="America/Winnipeg")
-    @Scheduled(initialDelay = 4000, fixedRate = 100000000)
+//    @Scheduled(initialDelay = 4000, fixedRate = 100000000)
     public void autoRenewMessage() {
         if (forbiddenAutoRenew) {
             forbiddenAutoRenew = false;

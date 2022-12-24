@@ -1,10 +1,8 @@
 package com.weiyuscode.wechatpush.service;
 
-import com.weiyuscode.wechatpush.entity.AccessToken;
+import com.weiyuscode.wechatpush.pojo.AccessToken;
 
 public interface AccessTokenService {
-    public AccessToken getAccessToken();
-
-
-    public void renewAccessToken(AccessToken accessToken);
+    AccessToken getAccessToken();
+    void renewAccessToken(AccessToken accessToken);
 }
