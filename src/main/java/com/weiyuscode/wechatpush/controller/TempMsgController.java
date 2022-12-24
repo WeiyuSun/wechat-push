@@ -22,24 +22,18 @@ import java.nio.charset.StandardCharsets;
 public class TempMsgController {
     @Autowired
     private TempMessageService tempMessageService;
-
     @Autowired
     private DailyMessageService dailyMessageService;
     @Autowired
     private RestTemplate restTemplate;
-
     @Value("${wechat.config.templateMsgUrl}")
     private String templateMsgUrl;
-
     @Autowired
     private DailyMessageController dailyMessageController;
-
     @Autowired
     private WeatherController weatherController;
-
     @Autowired
     private AccessTokenService accessTokenService;
-
     //@Scheduled(cron = "0 30 9 * * ?", zone = "America/Winnipeg")
     @Scheduled(initialDelay = 7000, fixedRate = 10000)
     public void sendTempMsg() {
@@ -47,11 +41,11 @@ public class TempMsgController {
         weatherController.getWeather();
 
         TemplateMessage templateMessage = tempMessageService.getTemplateMessage();
-        templateMsgUrl += accessTokenService.getAccessToken().getAccessToken();
+        String templateUrlWithAccessToken = templateMsgUrl + accessTokenService.getAccessToken().getAccessToken();
         System.out.println(JSON.toJSONString(templateMessage));
         restTemplate.getMessageConverters()
                 .add(0, new StringHttpMessageConverter(StandardCharsets.UTF_8));
-        String result = restTemplate.postForObject(templateMsgUrl, JSON.toJSONString(templateMessage), String.class);
+        String result = restTemplate.postForObject(templateUrlWithAccessToken, JSON.toJSONString(templateMessage), String.class);
 
         dailyMessageService.renewHint("");
         System.out.println(result);
