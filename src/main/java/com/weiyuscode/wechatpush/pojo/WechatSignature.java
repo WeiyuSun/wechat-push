@@ -1,12 +1,10 @@
-package com.weiyuscode.wechatpush.vo;
+package com.weiyuscode.wechatpush.pojo;
 
 import com.alibaba.fastjson.annotation.JSONField;
 import lombok.Data;
-import org.springframework.context.annotation.Bean;
-import org.springframework.stereotype.Component;
 
 @Data
-public class WechatSignatureVo {
+public class WechatSignature {
     @JSONField(name ="signature" )
     private String signature;
     @JSONField(name ="timestamp" )

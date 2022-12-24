@@ -9,7 +9,9 @@ import com.weiyuscode.wechatpush.service.TempMessageService;
 import com.weiyuscode.wechatpush.service.WeatherService;
 import com.weiyuscode.wechatpush.utils.DateUtils;
 import com.weiyuscode.wechatpush.utils.TextColorUtils;
-import com.weiyuscode.wechatpush.vo.WechatMessageVo;
+import com.weiyuscode.wechatpush.utils.WechatEventType;
+import com.weiyuscode.wechatpush.utils.WechatMessageType;
+import com.weiyuscode.wechatpush.pojo.WechatMessage;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
@@ -17,7 +19,6 @@ import org.springframework.stereotype.Service;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
-import java.util.Map;
 
 import static com.weiyuscode.wechatpush.utils.TemperatureUtils.generateFeelTemperatureContent;
 import static com.weiyuscode.wechatpush.utils.TemperatureUtils.generateTemperatureContent;
@@ -26,7 +27,9 @@ import static com.weiyuscode.wechatpush.utils.TemperatureUtils.generateTemperatu
 public class TempMessageServiceImpl implements TempMessageService {
 
     @Value("${wechat.config.openID.me}")
-    private String touser;
+    private String me;
+    @Value("${wechat.config.openID.special}")
+    private String myGirl;
     @Value("${wechat.config.tempID}")
     private String tempID;
 
@@ -41,7 +44,6 @@ public class TempMessageServiceImpl implements TempMessageService {
 
     /**
      * get the json template message
-     *
      */
     @Override
     public TemplateMessage getTemplateMessage() {
@@ -67,14 +69,61 @@ public class TempMessageServiceImpl implements TempMessageService {
         tempMsgData.setRelationLen(new TemplateMsgDataContent(relationLen.toString(), TextColorUtils.orange));
         tempMsgData.setDailyMessage(new TemplateMsgDataContent(dailyMessageService.getTodayMessage(), TextColorUtils.pink));
         tempMsgData.setDailyHint(new TemplateMsgDataContent(dailyMessageService.getTodayHint(), TextColorUtils.pink));
-        msg.setTouser(touser);
+        msg.setTouser(me);
         msg.setTemplateID(tempID);
         msg.setData(tempMsgData);
         return msg;
     }
 
     @Override
-    public void processMessageFromWechat(WechatMessageVo wechatMessageVo) {
+    public WechatMessage processMessageFromWechat(WechatMessage wechatMessage) {
+        if (!WechatEventType.SUBSCRIBE.equals(wechatMessage.getEventType()) &&
+                !me.equals(wechatMessage.getFromUserName()) &&
+                !myGirl.equals(wechatMessage.getFromUserName())){
+            System.out.println("reject");
+            return rejectOthers(wechatMessage);
+        }
 
+        String messageType = wechatMessage.getMessageType();
+
+        if (WechatMessageType.EVENT.equals(messageType)) {
+            return processEventMessage(wechatMessage);
+        } else {
+
+        }
+        return null;
+    }
+
+    private WechatMessage processEventMessage(WechatMessage wechatMessage) {
+        String eventType = wechatMessage.getEventType();
+
+        switch (eventType) {
+            case WechatEventType.SUBSCRIBE:
+                WechatMessage wechatTextMessage = new WechatMessage();
+                wechatTextMessage.setFromUserName(wechatMessage.getToUserName());
+                wechatTextMessage.setToUserName(wechatMessage.getFromUserName());
+                wechatTextMessage.setMessageType(WechatMessageType.TEXT);
+                wechatTextMessage.setCreateTime(new Date().getTime());
+
+                if (wechatMessage.getFromUserName().equals(me) || wechatMessage.getFromUserName().equals(myGirl)) {
+                    wechatTextMessage.setContent("亲爱的宝贝, 很高兴为您服务❤️");
+                } else {
+                    wechatTextMessage.setContent("您好, 本公众号用于为女朋友提供专属服务(os: 调戏女朋友专用), 因此不对外开放。 \n\n如果您也想为你的男/女朋友创建类似的公众号, 请关注我的GitHub以查看本项目源码。建议您取关本公众号以免给你造成不必要的打扰。\n\n祝您生活愉快^-^ \n\nGitHub: https://github.com/WeiyuSun/wechat-push");
+                }
+
+                return wechatTextMessage;
+        }
+
+        return null;
+    }
+
+    private WechatMessage rejectOthers(WechatMessage fromWechat){
+        WechatMessage wechatMessage = new WechatMessage();
+        wechatMessage.setFromUserName(fromWechat.getToUserName());
+        wechatMessage.setToUserName(fromWechat.getFromUserName());
+        wechatMessage.setMessageType(WechatMessageType.TEXT);
+        wechatMessage.setCreateTime(new Date().getTime());
+        wechatMessage.setContent("啊吧啊吧啊吧啊吧啊吧...\uD83E\uDD24");
+        return wechatMessage;
     }
 }

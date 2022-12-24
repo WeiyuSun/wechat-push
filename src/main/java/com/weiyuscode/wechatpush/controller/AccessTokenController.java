@@ -30,7 +30,7 @@ public class AccessTokenController {
         AccessToken accessToken = new AccessToken();
         accessToken.setAccessToken((String) result.get("access_token"));
         accessToken.setExpiresIn((Integer) result.get("expires_in"));
-
+        System.out.println("new access token " + accessToken);
         accessTokenService.renewAccessToken(accessToken);
     }
 }

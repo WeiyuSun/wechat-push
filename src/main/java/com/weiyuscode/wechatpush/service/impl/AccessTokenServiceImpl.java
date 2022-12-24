@@ -15,6 +15,5 @@ public class AccessTokenServiceImpl implements AccessTokenService {
     @Override
     public void renewAccessToken(AccessToken accessToken) {
         this.accessToken = accessToken;
-        System.out.println(this.accessToken);
     }
 }
