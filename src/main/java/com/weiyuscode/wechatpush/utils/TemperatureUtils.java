@@ -13,7 +13,6 @@ public class TemperatureUtils {
 
     public static TemplateMsgDataContent generateFeelTemperatureContent(Weather weatherInfo, boolean addEmoji){
         String content =  weatherInfo.getTempFeel() + "°C";
-        String textColor = TextColorUtils.black;
 
         Integer tempFeel = weatherInfo.getTempFeel();
         Integer tempMax = weatherInfo.getTempMax();

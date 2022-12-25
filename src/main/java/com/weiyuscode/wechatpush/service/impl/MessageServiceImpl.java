@@ -55,9 +55,9 @@ public class MessageServiceImpl implements MessageService {
         TemplateMessage messageToMyGirl = new TemplateMessage();
         TempMsgData tempMsgData = new TempMsgData();
 
-        tempMsgData.setTemperatureMax(generateTemperatureContent(weather.getTempMax(), true));
-        tempMsgData.setTemperatureMin(generateTemperatureContent(weather.getTempMin(), true));
-        tempMsgData.setTemperatureFeel(generateFeelTemperatureContent(weather, true));
+        tempMsgData.setTemperatureMax(generateTemperatureContent(weather.getTempMax(), false));
+        tempMsgData.setTemperatureMin(generateTemperatureContent(weather.getTempMin(), false));
+        tempMsgData.setTemperatureFeel(generateFeelTemperatureContent(weather, false));
 
         tempMsgData.setWeatherDetails(new TemplateMsgDataContent(weather.getWeatherDetails()));
 
