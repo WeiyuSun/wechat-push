@@ -16,6 +16,7 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.client.RestTemplate;
 
 import java.nio.charset.StandardCharsets;
+import java.util.List;
 
 @RestController()
 @RequestMapping("/message")
@@ -40,15 +41,17 @@ public class MessageController {
         dailyMessageController.autoRenewMessage();
         weatherController.getWeather();
 
-        TemplateMessage templateMessage = messageService.getTemplateMessage();
-        String templateUrlWithAccessToken = templateMsgUrl + accessTokenService.getAccessToken().getAccessToken();
-        System.out.println(JSON.toJSONString(templateMessage));
-        restTemplate.getMessageConverters()
-                .add(0, new StringHttpMessageConverter(StandardCharsets.UTF_8));
-        String result = restTemplate.postForObject(templateUrlWithAccessToken, JSON.toJSONString(templateMessage), String.class);
+        List<TemplateMessage> templateMessages = messageService.getTemplateMessages();
 
+        for(TemplateMessage templateMessage: templateMessages){
+            String templateUrlWithAccessToken = templateMsgUrl + accessTokenService.getAccessToken().getAccessToken();
+            System.out.println(JSON.toJSONString(templateMessage));
+            restTemplate.getMessageConverters()
+                    .add(0, new StringHttpMessageConverter(StandardCharsets.UTF_8));
+            String result = restTemplate.postForObject(templateUrlWithAccessToken, JSON.toJSONString(templateMessage), String.class);
+            System.out.println(result);
+        }
         dailyMessageService.renewHint("");
-        System.out.println(result);
     }
 
     @GetMapping(value = "/receiveMessage")

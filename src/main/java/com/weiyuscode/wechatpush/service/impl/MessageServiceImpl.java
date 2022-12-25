@@ -18,7 +18,9 @@ import org.springframework.stereotype.Service;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 
 import static com.weiyuscode.wechatpush.utils.TemperatureUtils.generateFeelTemperatureContent;
 import static com.weiyuscode.wechatpush.utils.TemperatureUtils.generateTemperatureContent;
@@ -46,9 +48,11 @@ public class MessageServiceImpl implements MessageService {
      * get the json template message
      */
     @Override
-    public TemplateMessage getTemplateMessage() {
+    public List<TemplateMessage> getTemplateMessages() {
+
         Weather weather = weatherService.getWeather();
-        TemplateMessage msg = new TemplateMessage();
+        TemplateMessage messageToMe = new TemplateMessage();
+        TemplateMessage messageToMyGirl = new TemplateMessage();
         TempMsgData tempMsgData = new TempMsgData();
 
         tempMsgData.setTemperatureMax(generateTemperatureContent(weather.getTempMax(), true));
@@ -69,10 +73,20 @@ public class MessageServiceImpl implements MessageService {
         tempMsgData.setRelationLen(new TemplateMsgDataContent(relationLen.toString(), TextColorUtils.orange));
         tempMsgData.setDailyMessage(new TemplateMsgDataContent(dailyMessageService.getTodayMessage(), TextColorUtils.pink));
         tempMsgData.setDailyHint(new TemplateMsgDataContent(dailyMessageService.getTodayHint(), TextColorUtils.pink));
-        msg.setTouser(me);
-        msg.setTemplateID(tempID);
-        msg.setData(tempMsgData);
-        return msg;
+
+        List<TemplateMessage> data = new ArrayList<>();
+
+        messageToMe.setTouser(me);
+        messageToMe.setTemplateID(tempID);
+        messageToMe.setData(tempMsgData);
+
+        messageToMyGirl.setTouser(myGirl);
+        messageToMyGirl.setTemplateID(tempID);
+        messageToMyGirl.setData(tempMsgData);
+
+        data.add(messageToMe);
+        data.add(messageToMyGirl);
+        return data;
     }
 
     @Override
