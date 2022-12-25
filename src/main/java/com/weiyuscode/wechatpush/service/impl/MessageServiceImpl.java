@@ -5,7 +5,7 @@ import com.weiyuscode.wechatpush.pojo.TemplateMessage;
 import com.weiyuscode.wechatpush.pojo.TemplateMsgDataContent;
 import com.weiyuscode.wechatpush.pojo.Weather;
 import com.weiyuscode.wechatpush.service.DailyMessageService;
-import com.weiyuscode.wechatpush.service.TempMessageService;
+import com.weiyuscode.wechatpush.service.MessageService;
 import com.weiyuscode.wechatpush.service.WeatherService;
 import com.weiyuscode.wechatpush.utils.DateUtils;
 import com.weiyuscode.wechatpush.utils.TextColorUtils;
@@ -24,7 +24,7 @@ import static com.weiyuscode.wechatpush.utils.TemperatureUtils.generateFeelTempe
 import static com.weiyuscode.wechatpush.utils.TemperatureUtils.generateTemperatureContent;
 
 @Service
-public class TempMessageServiceImpl implements TempMessageService {
+public class MessageServiceImpl implements MessageService {
 
     @Value("${wechat.config.openID.me}")
     private String me;

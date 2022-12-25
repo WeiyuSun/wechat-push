@@ -4,7 +4,7 @@ import com.alibaba.fastjson.JSON;
 import com.weiyuscode.wechatpush.pojo.TemplateMessage;
 import com.weiyuscode.wechatpush.service.AccessTokenService;
 import com.weiyuscode.wechatpush.service.DailyMessageService;
-import com.weiyuscode.wechatpush.service.TempMessageService;
+import com.weiyuscode.wechatpush.service.MessageService;
 import com.weiyuscode.wechatpush.pojo.WechatMessage;
 import com.weiyuscode.wechatpush.pojo.WechatSignature;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,9 +19,9 @@ import java.nio.charset.StandardCharsets;
 
 @RestController()
 @RequestMapping("/message")
-public class TempMsgController {
+public class MessageController {
     @Autowired
-    private TempMessageService tempMessageService;
+    private MessageService messageService;
     @Autowired
     private DailyMessageService dailyMessageService;
     @Autowired
@@ -40,7 +40,7 @@ public class TempMsgController {
         dailyMessageController.autoRenewMessage();
         weatherController.getWeather();
 
-        TemplateMessage templateMessage = tempMessageService.getTemplateMessage();
+        TemplateMessage templateMessage = messageService.getTemplateMessage();
         String templateUrlWithAccessToken = templateMsgUrl + accessTokenService.getAccessToken().getAccessToken();
         System.out.println(JSON.toJSONString(templateMessage));
         restTemplate.getMessageConverters()
@@ -60,7 +60,7 @@ public class TempMsgController {
     @PostMapping(value = "/receiveMessage", consumes = MediaType.ALL_VALUE,
             produces = MediaType.APPLICATION_XML_VALUE)
     public @ResponseBody WechatMessage receiveMessage(@RequestBody WechatMessage wechatMessageVo) {
-        WechatMessage wechatMessage = tempMessageService.processMessageFromWechat(wechatMessageVo);
+        WechatMessage wechatMessage = messageService.processMessageFromWechat(wechatMessageVo);
         return wechatMessage;
     }
 }

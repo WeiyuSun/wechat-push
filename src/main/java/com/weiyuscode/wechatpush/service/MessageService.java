@@ -4,7 +4,7 @@ import com.weiyuscode.wechatpush.pojo.TemplateMessage;
 import com.weiyuscode.wechatpush.pojo.WechatMessage;
 
 
-public interface TempMessageService {
+public interface MessageService {
     TemplateMessage getTemplateMessage();
 
     WechatMessage processMessageFromWechat(WechatMessage wechatMessage);
