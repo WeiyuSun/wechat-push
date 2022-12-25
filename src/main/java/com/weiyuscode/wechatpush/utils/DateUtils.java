@@ -13,4 +13,17 @@ public class DateUtils {
     public static SimpleDateFormat getYmdDateFormat() {
         return ymdDateFormat;
     }
+
+    public static String getWeekdayContent(int weekday) {
+        return switch (weekday) {
+            case 2 -> "周一 (ノへ`、)";
+            case 3 -> "周二 ￣△￣";
+            case 4 -> "周三 (´v｀)2 days left~";
+            case 5 -> "周四 <(*￣▽￣*)/";
+            case 6 -> "周五 ٩(ˊᗜˋ*)و";
+            case 7 -> "周六";
+            case 1 -> "周天";
+            default -> "";
+        };
+    }
 }

@@ -7,5 +7,6 @@ public class TextColorUtils {
     public final static String black = "#000000";
     public final static String orange = "#ffa200";
 
+    public final static String green = "#30b07d";
     public final static String pink = "#ffabfe";
 }

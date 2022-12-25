@@ -35,8 +35,8 @@ public class MessageController {
     private WeatherController weatherController;
     @Autowired
     private AccessTokenService accessTokenService;
-    //@Scheduled(cron = "0 30 9 * * ?", zone = "America/Winnipeg")
-    @Scheduled(initialDelay = 7000, fixedRate = 10000)
+    @Scheduled(cron = "0 30 9 * * ?", zone = "America/Winnipeg")
+//    @Scheduled(initialDelay = 7000, fixedRate = 10000)
     public void sendTempMsg() {
         dailyMessageController.autoRenewMessage();
         weatherController.getWeather();

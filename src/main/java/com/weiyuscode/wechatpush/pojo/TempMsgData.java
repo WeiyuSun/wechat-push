@@ -5,6 +5,12 @@ import lombok.Data;
 
 @Data
 public class TempMsgData {
+    @JSONField(name="day")
+    private TemplateMsgDataContent day;
+    @JSONField(name="month")
+    private TemplateMsgDataContent month;
+    @JSONField(name="today_weekday")
+    private TemplateMsgDataContent todayWeekday;
     @JSONField(name="temp_min")
     private TemplateMsgDataContent temperatureMin;
     @JSONField(name="temp_max")

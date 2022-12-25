@@ -15,10 +15,12 @@ import com.weiyuscode.wechatpush.pojo.WechatMessage;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
+import org.springframework.util.unit.DataUnit;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 
@@ -49,11 +51,20 @@ public class MessageServiceImpl implements MessageService {
      */
     @Override
     public List<TemplateMessage> getTemplateMessages() {
+        Date today = new Date();
+        Calendar calendar = Calendar.getInstance();
+        int day = calendar.get(Calendar.DATE);
+        int month = calendar.get(Calendar.MONTH);
+        int weekday = calendar.get(Calendar.DAY_OF_WEEK);
 
         Weather weather = weatherService.getWeather();
         TemplateMessage messageToMe = new TemplateMessage();
         TemplateMessage messageToMyGirl = new TemplateMessage();
         TempMsgData tempMsgData = new TempMsgData();
+
+        tempMsgData.setDay(new TemplateMsgDataContent(String.valueOf(day), TextColorUtils.green));
+        tempMsgData.setMonth(new TemplateMsgDataContent(String.valueOf(month), TextColorUtils.green));
+        tempMsgData.setTodayWeekday(new TemplateMsgDataContent(DateUtils.getWeekdayContent(weekday)));
 
         tempMsgData.setTemperatureMax(generateTemperatureContent(weather.getTempMax(), false));
         tempMsgData.setTemperatureMin(generateTemperatureContent(weather.getTempMin(), false));

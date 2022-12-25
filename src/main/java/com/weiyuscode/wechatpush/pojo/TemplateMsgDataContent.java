@@ -1,4 +1,5 @@
 package com.weiyuscode.wechatpush.pojo;
+import com.weiyuscode.wechatpush.utils.TextColorUtils;
 import lombok.Data;
 
 @Data
@@ -8,7 +9,7 @@ public class TemplateMsgDataContent {
 
     public TemplateMsgDataContent(String value){
         this.value = value;
-        color = "#000000"; // default, black
+        color = TextColorUtils.black; // default, black
     }
 
     public TemplateMsgDataContent(String value, String color){
