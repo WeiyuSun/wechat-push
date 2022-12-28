@@ -22,8 +22,6 @@ public class AccessTokenController {
 
     @Scheduled(initialDelay = 1000, fixedRate = 3600000)
     public void renewAccessToken(){
-
-
         Map result = restTemplate.getForObject(accessTokenUri, Map.class);
 
         // TODO: add exception
