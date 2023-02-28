@@ -54,7 +54,8 @@ public class MessageServiceImpl implements MessageService {
         Date today = new Date();
         Calendar calendar = Calendar.getInstance();
         int day = calendar.get(Calendar.DATE);
-        int month = calendar.get(Calendar.MONTH);
+        int month = calendar.get(Calendar.MONTH) + 1;
+        System.out.println("month is " + month);
         int weekday = calendar.get(Calendar.DAY_OF_WEEK);
 
         Weather weather = weatherService.getWeather();
